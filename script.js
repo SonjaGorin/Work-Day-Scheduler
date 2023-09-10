@@ -55,17 +55,51 @@
 var containerEl = $(".container")
 var rowEl = $(".time-block")
 var hourEl = $(".hour")
+var currentDayEl = $("#currentDay")
 
 $(function () {
   
   for (var i = 9; i <= 17; i++) {
     var newRow = rowEl.clone();
-    newRow.attr("id", "hour-" + [i])
-    newRow.find(".hour").text(i);
+    newRow.attr("id", "hour-" + [i]);
+    var calendarTime = newRow.find(".hour")
+    if (i < 10) {
+      calendarTime.text("0" + i + ":00");
+    }else{
+      calendarTime.text(i + ":00");
+    }
     containerEl.append(newRow);
     
   }
   rowEl.remove();
   
+  var today = dayjs().format("dddd, MMMM DD")
+  currentDayEl.text(today)
+
+  var timeNow = dayjs().format("HH")
+  console.log(timeNow)
+
+  if (calendarTime.text() < timeNow) {
+    
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 });
