@@ -56,50 +56,49 @@ var containerEl = $(".container")
 var rowEl = $(".time-block")
 var hourEl = $(".hour")
 var currentDayEl = $("#currentDay")
-
-$(function () {
   
+$(function() {
   for (var i = 9; i <= 17; i++) {
     var newRow = rowEl.clone();
     newRow.attr("id", "hour-" + [i]);
+    newRow.addClass("new-row")
     var calendarTime = newRow.find(".hour")
     if (i < 10) {
       calendarTime.text("0" + i + ":00");
-    }else{
+    } else {
       calendarTime.text(i + ":00");
     }
     containerEl.append(newRow);
-    
   }
   rowEl.remove();
+
+  return newRow
+})
   
   var today = dayjs().format("dddd, MMMM DD")
   currentDayEl.text(today)
 
-  var timeNow = dayjs().format("HH")
-  console.log(timeNow)
+  // var timeNow = dayjs().format("HH")
+  // console.log(timeNow)
 
-  if (calendarTime.text() < timeNow) {
-    
-  }
+$(function() { 
+  $(".hour").each(function() {
+    var calendarTimeSplit = $(this).text().split(":")
+    var calendarTimeNumber = Number(calendarTimeSplit[0])
 
+    var timeNow = dayjs().set("hour", 10).format("HH")
+    var timeNowNumber = Number(timeNow)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    if (calendarTimeNumber < timeNowNumber) {
+      $(this).parent().addClass("past")
+    }
+    if (calendarTimeNumber === timeNowNumber) {
+      $(this).parent().addClass("present")
+    }
+    if (calendarTimeNumber > timeNowNumber) {
+      $(this).parent().addClass("future")
+    }
+  })
+})
 
 
-});
