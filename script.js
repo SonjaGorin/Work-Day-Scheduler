@@ -103,19 +103,14 @@ $(function() {
   })
 })
 
-var events = []
 
-// function init()  {
-//   var storedEvents = JSON.parse(localStorage.getItem("events"));
+var events = {}
 
-//   if (storedEvents !== null) {
-//     events = storedEvents;
-//   }
-// }
-
+  
 function storeEvents() {
   localStorage.setItem("events", JSON.stringify(events));
 }
+
 
 var onButton =  function(event) {
   event.preventDefault();
@@ -124,21 +119,42 @@ var onButton =  function(event) {
   buttonClicked.parent()
   var buttonClickedParent = buttonClicked.parent()
   var buttonClickedText = buttonClickedParent.children().eq(1).val()
+  var buttonClickedTextId = buttonClickedParent.children().eq(1).attr("id")
   console.log(buttonClickedText)
+  console.log(buttonClickedTextId)
 
   if (buttonClickedText === "") {
     return;
   } else {
-    events.push(buttonClickedText)
-    localStorage.setItem("events", JSON.stringify(events));
-    storeEvents();
+    events[buttonClickedTextId] = buttonClickedText
+   storeEvents()
   }
+
+  return eventsPlace
 }
 
-
-
-
 containerEl.on("click", ".saveBtn", onButton)
+
+// function init()  {
+  // localStorage.clear()
+  var storedEvents = JSON.parse(localStorage.getItem("events"));
+  console.log(storedEvents)
+
+  if (storedEvents !== null) {
+    events = storedEvents;
+  }
+ 
+  // for (var i = 0; i< events.length; i++) {
+  //   if (eventInputEl.attr("id") === eventsPlace.val())
+  //     $("textarea").text(eventsPlace.key())
+  // }
+
+// }
+
+
+
+
+
 
 
 // init()
