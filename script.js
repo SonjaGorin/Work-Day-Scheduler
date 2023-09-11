@@ -56,11 +56,15 @@ var containerEl = $(".container")
 var rowEl = $(".time-block")
 var hourEl = $(".hour")
 var currentDayEl = $("#currentDay")
+var ButtonEl = $(".saveBtn")
+var eventInputEl = (".description")
   
 $(function() {
   for (var i = 9; i <= 17; i++) {
     var newRow = rowEl.clone();
     newRow.attr("id", "hour-" + [i]);
+    newRow.children().eq(1).attr("id", "text-" + [i])
+    newRow.children().eq(2).attr("id", "button-" + [i])
     newRow.addClass("new-row")
     var calendarTime = newRow.find(".hour")
     if (i < 10) {
@@ -78,15 +82,13 @@ $(function() {
   var today = dayjs().format("dddd, MMMM DD")
   currentDayEl.text(today)
 
-  // var timeNow = dayjs().format("HH")
-  // console.log(timeNow)
-
 $(function() { 
   $(".hour").each(function() {
     var calendarTimeSplit = $(this).text().split(":")
     var calendarTimeNumber = Number(calendarTimeSplit[0])
 
-    var timeNow = dayjs().set("hour", 10).format("HH")
+    var timeNow = dayjs().format("HH")
+    // var timeNow = dayjs().set("hour", 11).format("HH")
     var timeNowNumber = Number(timeNow)
 
     if (calendarTimeNumber < timeNowNumber) {
@@ -101,4 +103,42 @@ $(function() {
   })
 })
 
+var events = []
 
+// function init()  {
+//   var storedEvents = JSON.parse(localStorage.getItem("events"));
+
+//   if (storedEvents !== null) {
+//     events = storedEvents;
+//   }
+// }
+
+function storeEvents() {
+  localStorage.setItem("events", JSON.stringify(events));
+}
+
+var onButton =  function(event) {
+  event.preventDefault();
+
+  var buttonClicked = $(event.currentTarget);
+  buttonClicked.parent()
+  var buttonClickedParent = buttonClicked.parent()
+  var buttonClickedText = buttonClickedParent.children().eq(1).val()
+  console.log(buttonClickedText)
+
+  if (buttonClickedText === "") {
+    return;
+  } else {
+    events.push(buttonClickedText)
+    localStorage.setItem("events", JSON.stringify(events));
+    storeEvents();
+  }
+}
+
+
+
+
+containerEl.on("click", ".saveBtn", onButton)
+
+
+// init()
