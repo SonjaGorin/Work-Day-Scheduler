@@ -59,7 +59,8 @@ var currentDayEl = $("#currentDay")
 var ButtonEl = $(".saveBtn")
 var eventInputEl = (".description")
   
-$(function() {
+
+function renderCalendar() {
   for (var i = 9; i <= 17; i++) {
     var newRow = rowEl.clone();
     newRow.attr("id", "hour-" + [i]);
@@ -75,44 +76,38 @@ $(function() {
     containerEl.append(newRow);
   }
   rowEl.remove();
+}
 
-  return newRow
-})
-  
-  var today = dayjs().format("dddd, MMMM DD")
-  currentDayEl.text(today)
-
-$(function() { 
+function colorCalendar() { 
   $(".hour").each(function() {
     var calendarTimeSplit = $(this).text().split(":")
-    var calendarTimeNumber = Number(calendarTimeSplit[0])
+    var hour = Number(calendarTimeSplit[0]);
+    var currentHour = Number(dayjs().format("HH"));
 
-    var timeNow = dayjs().format("HH")
-    // var timeNow = dayjs().set("hour", 11).format("HH")
-    var timeNowNumber = Number(timeNow)
-
-    if (calendarTimeNumber < timeNowNumber) {
+    if (hour < currentHour) {
       $(this).parent().addClass("past")
     }
-    if (calendarTimeNumber === timeNowNumber) {
+    if (hour === currentHour) {
       $(this).parent().addClass("present")
     }
-    if (calendarTimeNumber > timeNowNumber) {
+    if (hour > currentHour) {
       $(this).parent().addClass("future")
     }
   })
-})
-
-
-var events = {}
-
-  
-function storeEvents() {
-  localStorage.setItem("events", JSON.stringify(events));
 }
 
+function setDateInTitle() {
+  var today = dayjs().format("dddd, MMMM DD");
+  currentDayEl.text(today);
+}
 
-var onButton =  function(event) {
+var calendarEvents = {};
+
+function storeCalendarEvents() {
+  localStorage.setItem("events", JSON.stringify(calendarEvents));
+}
+
+function updateCalendarEvents(event) {
   event.preventDefault();
 
   var buttonClicked = $(event.currentTarget);
@@ -120,41 +115,29 @@ var onButton =  function(event) {
   var buttonClickedParent = buttonClicked.parent()
   var buttonClickedText = buttonClickedParent.children().eq(1).val()
   var buttonClickedTextId = buttonClickedParent.children().eq(1).attr("id")
-  console.log(buttonClickedText)
-  console.log(buttonClickedTextId)
 
   if (buttonClickedText === "") {
     return;
   } else {
-    events[buttonClickedTextId] = buttonClickedText
-   storeEvents()
+    calendarEvents[buttonClickedTextId] = buttonClickedText
+    storeCalendarEvents()
   }
-
-  return eventsPlace
 }
 
-containerEl.on("click", ".saveBtn", onButton)
-
-// function init()  {
+function loadCalendarEvents() {
   // localStorage.clear()
-  var storedEvents = JSON.parse(localStorage.getItem("events"));
-  console.log(storedEvents)
+  // var storedEvents = JSON.parse(localStorage.getItem("events"));
+  // console.log(storedEvents)
 
-  if (storedEvents !== null) {
-    events = storedEvents;
-  }
- 
-  // for (var i = 0; i< events.length; i++) {
-  //   if (eventInputEl.attr("id") === eventsPlace.val())
-  //     $("textarea").text(eventsPlace.key())
+  // if (storedEvents !== null) {
+  //   calendarEvents = storedEvents;
   // }
+}
 
-// }
-
-
-
-
-
-
-
-// init()
+$(function() {
+  setDateInTitle();
+  renderCalendar();
+  loadCalendarEvents();
+  colorCalendar();
+  containerEl.on("click", ".saveBtn", updateCalendarEvents);
+})
