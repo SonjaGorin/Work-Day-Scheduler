@@ -16,8 +16,8 @@ To use the Work Day Scheduler you can click on the link below.
 
 Page preview:
 
-![Work-Day-Scheduler-Screenshot](images/work-day-scheduler-screenshot-01.png)
-![Work-Day-Scheduler-Screenshot](images/work-day-scheduler-screenshot-02.png)
+![Work-Day-Scheduler-Screenshot](assets/images/work-day-scheduler-screenshot-01.png)
+![Work-Day-Scheduler-Screenshot](assets/images/work-day-scheduler-screenshot-02.png)
 
 ## Credits
 N/A
