@@ -5,6 +5,8 @@ var currentDayEl = $("#currentDay");
 var ButtonEl = $(".saveBtn");
 var eventInputEl = (".description");
   
+// this function renders rows in the calendar 
+// by cloning the original row and then deleting it
 function renderCalendar() {
   for (var i = 9; i <= 17; i++) {
     var newRow = rowEl.clone();
@@ -23,6 +25,8 @@ function renderCalendar() {
   rowEl.remove();
 }
 
+// this function colors the calendar rows depending on time of the day
+// if the hour is in the past, present or future 
 function colorCalendar() { 
   $(".hour").each(function() {
     var calendarTimeSplit = $(this).text().split(":");
@@ -41,6 +45,8 @@ function colorCalendar() {
   })
 }
 
+// this function uses dayjs to find current day and date 
+// and displays it in the calendar
 function setDateInTitle() {
   var today = dayjs().format("dddd, MMMM DD");
   currentDayEl.text(today);
@@ -48,10 +54,13 @@ function setDateInTitle() {
 
 var calendarEvents = {};
 
+// this function stores entered events in the local storage
 function storeCalendarEvents() {
   localStorage.setItem("calendarEvents", JSON.stringify(calendarEvents));
 }
 
+// this function adds events in the calendarEvents object
+// and then stores that object in local storage
 function updateCalendarEvents(event) {
   event.preventDefault();
 
@@ -65,6 +74,7 @@ function updateCalendarEvents(event) {
   storeCalendarEvents();
 }
 
+// this function loads events back into their fields when the page is reloaded
 function loadCalendarEvents() {
   var storedEvents = JSON.parse(localStorage.getItem("calendarEvents"));
 
@@ -77,6 +87,8 @@ function loadCalendarEvents() {
   }
 }
 
+// this is the function that will start when the page gets oppened 
+// and it alls all other functions
 $(function() {
   setDateInTitle();
   renderCalendar();
